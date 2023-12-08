@@ -7,19 +7,19 @@
 --%>
 <%--
     EL 내장객체
-    - context객체속성 (생략가능, 생략시 page -> request -> session -> application순으로 조회함
+    - context객체 속성 (맵) (생략가능, 생략시 page -> request -> session -> application순으로 조회함
         - pageScope -> pageContext.setAttribute 이렇게 쓰면 들어감
         - requestScope -> requestScope.name 이렇게 작성하는데 생략이 가능함
         - sessionScope
         - applicationScope
-    - 사용자입력값
+    - 사용자입력값(맵)
         - param
         - paramValues
-    - header정보
+    - header정보(맵)
         - header
         - headerValues
-    - 쿠키 cookie
-    - PageContext객체 직접 접근
+    - 쿠키 cookie(맵)
+    - pageContext PageContext객체 직접 접근 (포인터) :${pageContext.request.contextPath}
 
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>

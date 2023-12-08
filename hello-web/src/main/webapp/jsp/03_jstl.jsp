@@ -74,10 +74,11 @@
         </thead>
         <tbody>
             <%--
-                vs.index : 0-based index
-                vs.count : 1-based index
-                vs.first : 첫번째요소 여부
-                vs.last : 마지막요소 여부
+                varStatus 반복상태를 관리하는 객체 이름 지정
+                - vs.index : int 반환, 0-based index
+                - vs.count : int 반환, 1-based index
+                - vs.first : boolean 반환, 첫번째요소 여부
+                - vs.last : boolean 반환, 마지막요소 여부
              --%>
             <c:forEach items="${hobbies}" var="h" varStatus="vs">
                 <tr>
@@ -99,14 +100,18 @@
         </c:forEach>
     </div>
 
-
     <h2>fmt</h2>
+    <a href="https://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html">DecimalFormat</a>
+    <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</a>
     <ul>
         <li>
             <fmt:formatNumber value="${no1}" pattern="#,###"/> <%-- 적을거 없으면 뒤에 지워도됌 --%>
         </li>
         <li>
+            <%-- # 해당자리수가 없으면 공란처리 --%>
+            <%-- 0 해당자리수가 없으면 0처리 --%>
             <fmt:formatNumber value="${no2}" pattern="#,#"/> <%-- 특정자리수까지 반올림처리 --%>
+            <fmt:formatNumber value="${no2}" pattern="#,000"/> <%-- 특정자리수까지 반올림처리 --%>
         </li>
         <li>
             <fmt:formatDate value="${today}" pattern="yy/MM/dd(E) hh:mm:ss"/>
