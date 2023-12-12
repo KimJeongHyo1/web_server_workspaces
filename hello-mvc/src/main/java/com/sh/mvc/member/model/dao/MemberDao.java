@@ -1,6 +1,6 @@
-package com.sh.mybatis.member.model.dao;
+package com.sh.mvc.member.model.dao;
 
-import com.sh.mybatis.member.model.entity.Member;
+import com.sh.mvc.member.model.entity.Member;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;

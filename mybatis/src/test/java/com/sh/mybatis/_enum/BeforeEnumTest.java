@@ -25,6 +25,7 @@ public class BeforeEnumTest {
     @Test
     public void test1() {
         Member member = new Member("honggd", TYPE_MEMBER, GENDER_MALE);
+//        Member member = new Member("honggd", GENDER_MALE, )
         assertThat(member.type).isEqualTo(TYPE_MEMBER);
         assertThat(member.gender).isEqualTo(GENDER_MALE);
 

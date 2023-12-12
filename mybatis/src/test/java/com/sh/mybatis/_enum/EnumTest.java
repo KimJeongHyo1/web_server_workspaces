@@ -39,7 +39,7 @@ public class EnumTest {
         assertThat(admin.gender).isEqualTo(Gender.F);
     }
 
-    @DisplayName("Enum객체는 하나만 만들어져 공유된다")
+    @DisplayName("Enum객체는 하나만 만들어져 공유된다 Immutable")
     @Test
     public void test2() {
         Type M1 = Type.M;
@@ -63,7 +63,7 @@ public class EnumTest {
     @DisplayName("String을 Enum으로 변환")
     @Test
     public void test4() {
-        Gender M = Gender.valueOf("M");
+        Gender M = Gender.valueOf("M"); // 체크제약조건 있을 때 사용하면 좋음
         assertThat(M).isEqualTo(Gender.M);
 
     }

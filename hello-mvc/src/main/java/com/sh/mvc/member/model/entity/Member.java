@@ -1,4 +1,4 @@
-package com.sh.mybatis.member.model.entity;
+package com.sh.mvc.member.model.entity;
 
 import java.time.LocalDate;
 import java.util.List;

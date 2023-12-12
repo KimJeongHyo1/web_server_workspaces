@@ -34,7 +34,7 @@ values('abcde','1234','아무개','U','M', to_date('20000909','yyyymmdd'), 'abcd
 insert into member 
 values('qwerty','1234','쿼띠이','U','F', to_date('19900109','yyyymmdd'), 'qwerty@naver.com', '01012341234', '운동,등산', default, default);
 
---관리자계정 추가
+-- 관리자계정 추가
 insert into member 
 values('admin','1234','관리자','A','M', to_date('19971020','yyyymmdd'), 'admin@naver.com', '01044441234', '게임,독서',default, default);
 

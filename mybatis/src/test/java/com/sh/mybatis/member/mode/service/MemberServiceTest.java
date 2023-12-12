@@ -4,10 +4,7 @@ import com.sh.mybatis.member.model.entity.Gender;
 import com.sh.mybatis.member.model.entity.Member;
 import com.sh.mybatis.member.model.entity.Role;
 import com.sh.mybatis.member.model.service.MemberService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -15,13 +12,14 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class) // 순서 지정하려고 사용
 public class MemberServiceTest {
-    MemberService memberService; // fixture
+    MemberService memberService; // fixture (테스트 대상 객체)
 
     @BeforeEach
     public void beforeEach() {
         this.memberService = new MemberService();
-    }
+    } // 매번 새로 만들어 줌
 
     @DisplayName("MemberService객체는 null이 아니다")
     @Test
@@ -33,6 +31,7 @@ public class MemberServiceTest {
 
     /**
      * mybatis는 ResultSet의 데이터를  vo클래스객체로 자동변환한다
+     * - 컬럼명과 필드명이 일치해야한다. (언더스코어 <-> 카멜케이싱 설정 필수) -> config에 있음
      * - varchar2/char <-> String
      * - number <-> int/double
      * - date <-> java.util.Date(기본값), java.time.LocalDate
@@ -86,7 +85,7 @@ public class MemberServiceTest {
         assertThat(members)
                 .isNotNull()
                 .isNotEmpty();
-        members.forEach((member) -> assertThat(member.getName()).contains(keyword));
+        members.forEach((member) -> assertThat(member.getName()).contains(keyword)); // member.getName()). 점을 찍었을 때 뒤에 나오는걸로사용
     }
 
     @DisplayName("성별 검색")
@@ -103,7 +102,8 @@ public class MemberServiceTest {
     }
 
 
-    @Disabled // 건너뛰게하기
+//    @Disabled // 건너뛰게하기
+    @Order(1)
     @DisplayName("회원가입")
     @Test
     public void test7() {
@@ -125,6 +125,7 @@ public class MemberServiceTest {
         assertThat(member2.getName()).isEqualTo(name);
     }
 
+    @Order(2)
     @DisplayName("회원가입 시 오류 체크") // 한번 입력되어있을때다시 하면 오류남
     @Test
     public void test8() {
@@ -133,16 +134,17 @@ public class MemberServiceTest {
                         "sinsa", null, "홍길동", Role.U, Gender.M, LocalDate.of(1999,9,9),
                         "honggd@naver.com", "01012341234", Arrays.asList("게임", "독서"),0 , null);
         Throwable th = catchThrowable(() -> {
-            int result = memberService.insertMember(member);
+            int result = memberService.insertMember(member); // 예외 던져지면 성공
         });
-        assertThat(th).isInstanceOf(Exception.class);
+        assertThat(th).isInstanceOf(Exception.class); // 예외메세지에 뭐가 들었는지 확인
     }
 
-    @Disabled
+    @Order(3)
+//    @Disabled
     @DisplayName("회원정보 수정")
     @Test
     public void test9() {
-        // given  주어진 상황 작성
+        // given 주어진 상황 작성
         String id = "honggd";
         Member member = memberService.findById(id);
 
@@ -172,7 +174,8 @@ public class MemberServiceTest {
     }
 
 
-    @Disabled
+//    @Disabled
+    @Order(4)
     @DisplayName("회원 비밀번호 수정")
     @Test
     public void test10() {
@@ -191,7 +194,8 @@ public class MemberServiceTest {
 }
 
 
-    @Disabled
+//    @Disabled
+    @Order(5)
     @DisplayName("회원 권한 수정")
     @Test
     public void test11() {
@@ -211,6 +215,8 @@ public class MemberServiceTest {
     }
 
 
+//    @Disabled
+    @Order(6)
     @DisplayName("회원 삭제")
     @Test
     public void test12() {
@@ -224,6 +230,9 @@ public class MemberServiceTest {
         Member member2 = memberService.findById(id);
         assertThat(member2).isNull();
     }
+
+
+
 
 }
 
