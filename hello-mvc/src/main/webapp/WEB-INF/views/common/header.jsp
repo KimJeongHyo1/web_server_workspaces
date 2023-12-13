@@ -22,7 +22,7 @@
     <script src="${pageContext.request.contextPath}/js/tailwind.config.js"></script>
     <script>
         <c:if test="${msg != null}">
-            alert("${msg}");
+            alert(`${msg}`); // 여러줄 입력이 가능하도록 ``(백택)으로 감싸야한다.
 
             <%-- session 속성 msg 제거해서 1회만 출력되도록 한다. --%>
             <%-- session.removeAttribute("msg"); --%>

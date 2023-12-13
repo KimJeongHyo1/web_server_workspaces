@@ -22,7 +22,8 @@ hobbyEtc.addEventListener('blur', (e) => {
         // - afterbegin 시작태그 뒤 -> 첫 자식요소로 추가
         // - beforeend 종료태그 앞 -> 마지막 자식요소로 추가
         // - afterend 종료태그 뒤 -> 다음 형제요소로 추가
-        // 요소추가 hobbyetc에 끼워넣어야함
+        // e.target.parentElement : label#hobby-etc를 감싼 div태그
+        // 요소추가 hobby-etc에 끼워넣어야함
         e.target.parentElement.insertAdjacentHTML('beforebegin', html);
         e.target.innerHTML = '직접입력';
     }
@@ -47,7 +48,7 @@ document.memberRegisterFrm.addEventListener('submit', (e) => {
     }
 
     // 비밀번호 - 영문자/숫자/특수문자(!@#$%)포함 4글자 이상
-    const regExps  = [
+    const regExps = [
         // [{msg: string, re: RegExp}, {m...
         {
             re: /[A-Za-z]/,
