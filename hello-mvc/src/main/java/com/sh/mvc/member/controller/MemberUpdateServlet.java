@@ -58,6 +58,6 @@ public class MemberUpdateServlet extends HttpServlet {
 
         // 4. redirect : /mvc/member/memberDetail
 //        resp.sendRedirect(req.getContextPath());
-        resp.sendRedirect(req.getContextPath() + "/"); /// member/memberDetail
+        resp.sendRedirect(req.getContextPath() + "/member/memberDetail"); /// member/memberDetail
     }
 }

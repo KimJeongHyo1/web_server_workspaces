@@ -1,5 +1,6 @@
 package com.sh.mvc.member.controller;
 
+import com.sh.mvc.common.HelloMvcUtils;
 import com.sh.mvc.member.model.entity.Member;
 import com.sh.mvc.member.model.service.MemberService;
 
@@ -67,7 +68,8 @@ public class MemberLoginServlet extends HttpServlet {
 
         // 2. 사용자입력값 가져오기
         String id = req.getParameter("id"); // id=name값
-        String password = req.getParameter("password");
+//        String password = req.getParameter("password");
+        String password = HelloMvcUtils.getEncryptedPassword(req.getParameter("password"), id);
         System.out.println(id + ", " + password);
 
         // 3. 업무로직 (이번요청에 처리할 작업) -> 로그인(인증)
@@ -87,10 +89,12 @@ public class MemberLoginServlet extends HttpServlet {
             // req객체는 이번 요청 실행 후 폐기
 //            HttpSession session = req.getSession(); // 성공, 실패 다 쓰려고 올림
             session.setAttribute("loginMember", member);
+            resp.sendRedirect(req.getContextPath() + "/"); // 성공시 index페이지로 이동
 
         } else {
             // 로그인 실패
             session.setAttribute("msg", "아이디가 존재하지 않거나, 비밀번호가 틀립니다😥");
+            resp.sendRedirect(req.getContextPath() + "/member/memberLogin"); // GET / 실패시 다시 로그인페이지로 이동
         }
 
 
@@ -98,6 +102,6 @@ public class MemberLoginServlet extends HttpServlet {
         // DML요청(POST), 로그인요청은 반드시 redirect로 처리해서 url을 변경해야 함
 //        req.getRequestDispatcher("/index.jsp").forward(req, resp);
 //        resp.sendRedirect(req.getContextPath());
-        resp.sendRedirect(req.getContextPath() + "/"); // 불필요한걸 줄이기위해 /를 넣어줌(index페이지로 바로 이동)
+//        resp.sendRedirect(req.getContextPath() + "/"); // 불필요한걸 줄이기위해 /를 넣어줌(index페이지로 바로 이동)
     }
 }

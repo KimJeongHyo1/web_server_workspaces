@@ -8,13 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * <pre>
  * Filter의 생명주기(get, post가리지않고 url만 맞으면 적용)
  * - 서버구동시 Filter객체를 만들고, 그 이후 해당 객체를 재사용(싱글턴)한다.
  * 1. 생성자 호출
  * 2. init 호출
  *
  * 3. doFilter (전처리/후처리)
- *  - Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
+ *  - Filter#doFilter(ServletRequest, ServletResponse, FilterChain) (싱글턴패턴ㄴ)
  *  - HttpFilter#doFilter(HttpServletRequest, HttpServletResponse, FilterChain)
  * 4. destroy 호출
  */

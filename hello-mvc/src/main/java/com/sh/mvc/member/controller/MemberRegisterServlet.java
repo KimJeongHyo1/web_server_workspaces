@@ -1,5 +1,6 @@
 package com.sh.mvc.member.controller;
 
+import com.sh.mvc.common.HelloMvcUtils;
 import com.sh.mvc.member.model.entity.Gender;
 import com.sh.mvc.member.model.entity.Member;
 import com.sh.mvc.member.model.entity.Role;
@@ -19,7 +20,7 @@ import java.util.List;
 @WebServlet("/member/memberRegister")
 public class MemberRegisterServlet extends HttpServlet {
     private MemberService memberService = new MemberService();
-// 405오류는 Get준비하고 Post로 받을준비 | Post준비하고 Get으로 받을준비
+// 405오류는 Get준비하고 Post로 받을준비해서 발생 | Post준비하고 Get으로 받을준비해서 발생
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/views/member/memberRegister.jsp").forward(req, resp);
@@ -33,7 +34,9 @@ public class MemberRegisterServlet extends HttpServlet {
         // 2. 사용자입력값 가져오기
         // id, password, name, birthday, email, gender, hobby
         String id = req.getParameter("id");
-        String password = req.getParameter("password");
+//        String password = req.getParameter("password");
+//        String password = HelloMvcUtils.getEncryptedPassword(req.getParameter("password"));
+        String password = HelloMvcUtils.getEncryptedPassword(req.getParameter("password"), id); // salt추가해서 보안강화
         String name = req.getParameter("name");
         String _birthday = req.getParameter("birthday");
         String email = req.getParameter("email");
@@ -42,7 +45,7 @@ public class MemberRegisterServlet extends HttpServlet {
         String[] _hobby = req.getParameterValues("hobby");
         System.out.println(id + ", " + password + ", " + name + ", " + _birthday + ", " + email + ", " + phone + ", " + _gender + ", " + _hobby);
 
-
+        // String으로 받았으니까 값 바꿔주기
         LocalDate birthday = _birthday != null && !"".equals(_birthday) ?
                 LocalDate.parse(_birthday, DateTimeFormatter.ISO_DATE) :
                     null;

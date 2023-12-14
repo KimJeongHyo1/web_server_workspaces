@@ -33,7 +33,7 @@ public class MemberDeleteServlet extends HttpServlet {
         session.invalidate();
 
         // 세션 새로 생성, msg속성 저장
-        session = req.getSession();
+        session = req.getSession(); // 세션해재 했으니까 다시 연결
         session.setAttribute("msg", "성공적으로 탈퇴했습니다. \n다음에 다시 만나😁" );
 
         // 4. redirect : /mvc/member/memberDetail

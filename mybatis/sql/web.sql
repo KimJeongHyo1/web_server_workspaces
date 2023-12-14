@@ -45,3 +45,8 @@ values('admin','1234','관리자','A','M', to_date('19971020','yyyymmdd'), 'admi
 
 select * from member;
 commit;
+
+--delete from member where id in ('leess', 'sejong');
+update member set password = 'xXiO+A+OguZDPT6b71po1VMPecPRAT6m1/k9yZMjgcnJ2AAPolRq3uf6KmgkbjJoogVmY1cqvU9KJRSdUXlJ+A=='
+where
+    id = 'qwerty';

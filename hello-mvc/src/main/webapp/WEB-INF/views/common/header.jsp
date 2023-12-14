@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.sh.mvc.member.model.entity.Role" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -54,6 +55,7 @@
                 </div>
             </div>
         </nav>
+
         <nav class="bg-gray-50">
             <div class="max-w-screen-xl px-4 py-3 mx-auto">
                 <div class="flex items-center">
@@ -66,6 +68,12 @@
                         </li>
                         <li>
                             <a href="#" class="text-gray-900 hover:underline">Post</a>
+                        </li>
+                        <%-- 관리자로 로그인한 경우만 노출하기 --%>
+                        <li>
+                            <c:if test="${loginMember.role == Role.A}">
+                            <a href="${pageContext.request.contextPath}/admin/memberList" class="text-gray-900 hover:underline">Admin-Member</a>
+                            </c:if>
                         </li>
                     </ul>
                 </div>

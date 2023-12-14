@@ -33,7 +33,7 @@ public class AuthenticationFilter extends HttpFilter {
         if (loginMember == null) {
             session.setAttribute("msg", "로그인 후 사용가능👻");
             resp.sendRedirect(req.getContextPath() + "/");
-            return; // redirect/forward 이후 실행코드는 없어야 한다.
+            return; // redirect/forward 이후 실행코드는 없어야 한다. -> 빼먹으면 또 호출함
         }
         super.doFilter(req, resp, chain); // 없으면 servlet으로 안넘어가짐
     }

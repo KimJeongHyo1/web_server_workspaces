@@ -94,5 +94,14 @@
             id = #{id}
     </delete>
 
+    <select id="searchMember" resultType="member"> <!-- 한개만 반환하려고 resultType -->
+        select
+            *
+        from.
+            member
+        where
+        <!-- 식별자(컬럼, 테이블명)작성 시  ${} 문법을 사용, #으로 쓰면  -->
+            ${searchType} like '%' || #{searchKeyword} || '%'
+    </select>
 
 </mapper>

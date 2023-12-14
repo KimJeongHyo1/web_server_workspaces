@@ -16,9 +16,9 @@ import java.io.IOException;
  *
  * Filter클래스를 만드는 방법
  * - javax servlet.Filter인터페이스를 구핸
- *  - doFilter(ServletRequest, ServletResponse, FilerChain) 오버라이드
+ *  - doFilter(ServletRequest, ServletResponse, FilterChain) 오버라이드
  * - javax servlet.http.HttpFilter클래스를 상속
- * - doFilter(HttpServletRequest, HttpServletResponse, FilerChain) 오버라이드
+ * - doFilter(HttpServletRequest, HttpServletResponse, FilterChain) 오버라이드
  * - ServletRequest, ServletResponse부모타입을 상속한 HttpServletRequest, HttpServletResponse
  * - down-casting 할 필요없이 즉시 사용가능해서 편리함
  */
@@ -38,7 +38,9 @@ public class LogFilter extends HttpFilter implements Filter {
         // filterChain : filter묶음(여러 Filter를 그룹핑해서 관리)
         // - 다음 Filter가 있는 경우, 해당 Filter#doFilter를 호출
         // - 마지막 Filter인 경우, Servlet 호출
-        super.doFilter(request, response, chain); // chain.doFilter(request, reponse) / 손대지말것
+
+//        super.doFilter(request, response, chain); // chain.doFilter(request, response) / 있어야함.손대지말것
+        chain.doFilter(request, response); // super 대신 이렇게 작성도 가능
 
         // 후처리 (응답직전)
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
