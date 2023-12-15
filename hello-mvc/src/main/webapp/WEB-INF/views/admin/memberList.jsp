@@ -69,6 +69,7 @@
                             ${member.name}
                         </td>
                         <td class="px-6 py-4">
+                            <%-- data- 하면 data에 정보저장가능 --%>
                             <select data-id="${member.id}" data-reg-date="${member.regDate}" class="member-role bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                                 <option value="U" ${member.role == Role.U ? 'selected' : ''} >일반</option>
                                 <option value="A" ${member.role == Role.A ? 'selected' : ''} >관리자</option>
@@ -86,7 +87,7 @@
                         <td class="px-6 py-4">
                             ${member.gender eq Gender.M ? '남' : (member.gender eq Gender.F ? '여' : '')}
                         </td>
-                                                                                      <%-- 변수는h 상태는 vs--%>
+                                                                                      <%-- 변수는h 상태는 vs / forEach한줄로 작성하면 결과물도 한줄로 나옴 --%>
                         <td class="px-6 py-4" title="<c:forEach items="${member.hobby}" var="h" varStatus="vs">${h}${not vs.last ? ',' : ''} </c:forEach>">
                             ${member.hobby[0]}${member.hobby.size() > 1 ? '...' : ''}
                         </td>

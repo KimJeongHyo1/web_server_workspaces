@@ -29,7 +29,7 @@ public class AuthorizationFilter extends HttpFilter {
         HttpSession session = req.getSession();
         Member loginMember = (Member) session.getAttribute("loginMember");
         if (loginMember == null || loginMember.getRole() != Role.A) {
-            session.setAttribute("msg", "관리자만 이용가능");
+            session.setAttribute("msg", "관리자만 이용가능"); /* 안전장치 잘 만들기 */
             resp.sendRedirect(req.getContextPath() + "/");
             return;
         }

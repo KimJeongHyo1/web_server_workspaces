@@ -21,7 +21,7 @@ document.querySelectorAll(".member-role").forEach((select) => {
         // role.value = value;
 
         // console.log(e.target.dataset);
-        const {id : idVal} = e.target.dataset;
+        const {id : idVal} = e.target.dataset; /* data-id로 저장한값 가져옴 */
         // console.log(idVal, value);
 
         if(confirm(`${idVal}회원을 ${value == 'A' ? '관리자' : '일반회원'}로 변경?`)) {

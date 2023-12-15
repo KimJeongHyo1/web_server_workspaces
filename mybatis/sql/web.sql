@@ -50,3 +50,9 @@ commit;
 update member set password = 'xXiO+A+OguZDPT6b71po1VMPecPRAT6m1/k9yZMjgcnJ2AAPolRq3uf6KmgkbjJoogVmY1cqvU9KJRSdUXlJ+A=='
 where
     id = 'qwerty';
+
+update member
+set
+    role = 
+where
+    id = 

@@ -35,7 +35,7 @@ public class AdminSearchMemberServlet extends HttpServlet {
         // 1. 사용자 입력값 가져오기
         String searchType = req.getParameter("search-type");
         String searchKeyword = req.getParameter("search-keyword");
-        Map<String, Object> param = new HashMap<>();
+        Map<String, Object> param = new HashMap<>(); /* 맵으로 묶어줘도 됌 */
         param.put("searchType", searchType);
         param.put("searchKeyword", searchKeyword);
         System.out.println(param);

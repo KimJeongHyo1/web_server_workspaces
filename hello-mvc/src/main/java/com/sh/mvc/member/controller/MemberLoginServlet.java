@@ -70,7 +70,7 @@ public class MemberLoginServlet extends HttpServlet {
         String id = req.getParameter("id"); // id=name값
 //        String password = req.getParameter("password");
         String password = HelloMvcUtils.getEncryptedPassword(req.getParameter("password"), id);
-        System.out.println(id + ", " + password);
+//        System.out.println(id + ", " + password); / 확인했으면 주석해놓기
 
         // 3. 업무로직 (이번요청에 처리할 작업) -> 로그인(인증)
         // id/password -> db에서 읽어온 데이터(member객체)랑 비교
