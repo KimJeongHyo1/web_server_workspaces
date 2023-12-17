@@ -10,7 +10,7 @@
     -->
 
     <!-- <select id="findById" resultType="com.sh.mybatis.member.model.entity.Member"> -->
-    <select id="findById" resultType="board">
+    <select id="findById" resultType="Board">
         select
             *
         from
@@ -18,7 +18,7 @@
         where
             id = #{id}
     </select>
-    <select id="findAll" resultType="board">
+    <select id="findAll" resultType="Board">
         <!--
             resultType속성은 한행과 매칭되는 타입 작성
         -->
@@ -30,7 +30,7 @@
             reg_date desc
     </select>
 
-    <select id="findByName" resultType="board">
+    <select id="findByName" resultType="Board">
         select
             *
         from
@@ -39,7 +39,7 @@
             name like '%' || #{name} || '%'
     </select>
 
-    <select id="findByGender" resultType="board">
+    <select id="findByGender" resultType="Board">
         select
             *
         from
@@ -48,26 +48,20 @@
             gender = #{gender}
     </select>
 
-    <insert id="insertBoard">
+    <insert id="insertBoard">/
         <!-- insert는 type안적어줘도됌 select는 무조건 적어야함-->
         insert into
             board
         values(
-                #{id}, #{password}, #{name}, #{role}, #{gender}, #{birthday}, #{email}, #{phone},
-                #{hobby, typeHandler = listStringTypeHandler}, default, default
-        )
+                #{title}, #{memberId}, #{name}, #{content}, default, default)
     </insert>
 
     <update id="updateBoard">
         update
             board
         set
-            name = #{name},
-            gender = #{gender},
-            birthday = #{birthday},
-            email = #{email},
-            phone = #{phone},
-            hobby = #{hobby, typeHandler=listStringTypeHandler}
+            title = #{title},
+            content = #{content}
         where
             id = #{id}
     </update>
@@ -121,16 +115,4 @@
         from
             board
     </select>
-
-    <select id="getTotalCount2" resultType="_int">
-        select
-            count(*)
-        from
-            board
-        where
-            ${searchType} like '%' || #{searchKeyword} || '%'
-    </select>
-
-
-
 </mapper>

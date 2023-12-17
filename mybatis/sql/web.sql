@@ -181,8 +181,7 @@ from (
     )
 where
     rnum between 11 and 20;
-    
-    
+
 select
     *
 from (
