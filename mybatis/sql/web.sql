@@ -311,6 +311,58 @@ select * from attachment order by id desc;
 
 
 
+---------------------------------------------------------------------- test ---------------------------------------------------------------------------------------------------
+
+-- TB_USER 테이블 생성 및 SEQ_UNO 시퀀스 생성
+CREATE TABLE TB_USER(
+    USER_NO NUMBER PRIMARY KEY,
+    USER_ID VARCHAR2(50) UNIQUE NOT NULL,
+    USER_NAME VARCHAR2(50) NOT NULL,
+    USER_AGE NUMBER NOT NULL
+);
+
+CREATE SEQUENCE SEQ_UNO
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+
+
+-- 샘플 데이터 삽입
+INSERT INTO TB_USER VALUES(SEQ_UNO.NEXTVAL, 'gd_hong', '홍길동', 20);
+INSERT INTO TB_USER VALUES(SEQ_UNO.NEXTVAL, 'sh_han', '한소희', 28);
+INSERT INTO TB_USER VALUES(SEQ_UNO.NEXTVAL, 'jm_park', '지민', 27);
+
+select * from TB_USER;
+COMMIT;
+
+select
+    *
+from
+    tb_user
+where
+    user_no = 1;
+    
+
+-- 학생테이블
+create table tb_student (
+    Student_Number number primary key,
+    Student_Name varchar2(60),
+    Korean_Score number not null,
+    English_Score number not null,
+    Math_Score number not null
+);
+
+-- 직원테이블
+create table tb_manager (
+    Manager_Number number primary key,
+    Manager_Name varchar2(60),
+--    Manager_Hire_date date not null
+    Manager_Hire_date char(10) -- /포함해서 10
+
+);
+
+select * from tb_manager;
 
 
 

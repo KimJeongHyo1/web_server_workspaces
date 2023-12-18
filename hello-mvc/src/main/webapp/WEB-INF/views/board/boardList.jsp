@@ -35,11 +35,11 @@
             <tbody>
             <c:forEach items="${boards}" var="board" varStatus="vs">
             <tr class="odd:bg-white even:bg-gray-50 border-b ">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">1</th>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">${board.id}</th>
                 <td class="px-6 py-4">${board.title}</td>
                 <td class="px-6 py-4">${board.memberId}</td>
                 <td class="px-6 py-4">
-                    <fmt:parseDate value="${member.regDate}" pattern="yyyy-MM-dd" var="regDate" scope="page"/>
+                    <fmt:parseDate value="${board.regDate}" pattern="yyyy-MM-dd" var="regDate" scope="page"/>
                     <fmt:formatDate value="${regDate}" pattern="yyyy/MM/dd"/></td>
                 <td class="px-6 py-4">
                     <img class="w-[16px]" src="../images/file.png" alt="">
