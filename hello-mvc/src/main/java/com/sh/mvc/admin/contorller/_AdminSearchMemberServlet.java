@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/admin/searchMember")
-public class AdminSearchMemberServlet extends HttpServlet {
+//@WebServlet("/admin/searchMember")
+public class _AdminSearchMemberServlet extends HttpServlet {
     private MemberService memberService = new MemberService();
 
     /**

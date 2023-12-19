@@ -2,6 +2,7 @@ package com.sh.mvc.board.controller;
 
 import com.sh.mvc.board.model.entity.Board;
 import com.sh.mvc.board.model.service.BoardService;
+import com.sh.mvc.board.model.vo.BoardVo;
 import com.sh.mvc.common.HelloMvcUtils;
 
 import javax.servlet.ServletException;
@@ -28,11 +29,14 @@ public class BoardListServlet extends HttpServlet {
             page = Integer.parseInt(req.getParameter("page"));
         } catch (NumberFormatException ignore) {}
 
+        // Map.of()은 immutable map객체를 제공
+        // 요소 key, value는 null일 수 없다.
         Map<String, Object> param = Map.of("page", page, "limit", limit);
 
         // 3. 업무로직
-        List<Board> boards = boardService.findAll(param);
+        List<BoardVo> boards = boardService.findAll(param);
         req.setAttribute("boards", boards);
+        System.out.println(boards);
 
         // 페이지바 작업
         int totalCount = boardService.getTotalCount();

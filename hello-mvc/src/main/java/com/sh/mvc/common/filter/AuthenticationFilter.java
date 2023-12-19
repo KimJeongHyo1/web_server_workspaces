@@ -20,7 +20,8 @@ import java.io.IOException;
 @WebFilter(urlPatterns = {
         "/member/memberDetail",
         "/member/memberUpdate",
-        "/member/memberDelete"
+        "/member/memberDelete",
+        "/board/boardCreat"
 
 })
 public class AuthenticationFilter extends HttpFilter {

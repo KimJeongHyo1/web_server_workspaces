@@ -1,7 +1,9 @@
 package com.sh.mvc.board.model.service;
 
 import com.sh.mvc.board.model.dao.BoardDao;
+import com.sh.mvc.board.model.entity.Attachment;
 import com.sh.mvc.board.model.entity.Board;
+import com.sh.mvc.board.model.vo.BoardVo;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
@@ -12,9 +14,9 @@ import static com.sh.mvc.common.SqlSessionTemplate.getSqlSession;
 public class BoardService {
     private BoardDao boardDao = new BoardDao();
 
-    public List<Board> findAll(Map<String, Object> param) {
+    public List<BoardVo> findAll(Map<String, Object> param) {
         SqlSession session = getSqlSession();
-        List<Board> boards = boardDao.findAll(session, param);
+        List<BoardVo> boards = boardDao.findAll(session, param);
         session.close();
         return boards;
     }
@@ -26,22 +28,33 @@ public class BoardService {
         return totalCount;
     }
 
-    public Board findById(long id) {
+    public BoardVo findById(long id) {
         SqlSession session = getSqlSession();
-        Board board = boardDao.findById(session, id);
+        BoardVo board = boardDao.findById(session, id);
         session.close();
         return board;
     }
 
-    public int insertBoard(Board board) {
+    public int insertBoard(BoardVo board) {
         int result = 0;
         SqlSession session = getSqlSession();
         try {
-            result = boardDao.insertBoard(session, board);
+            // board 테이블에 등록
+            result = boardDao.insertBoard(session, board); // 이후면 boardId확인가능
+            System.out.println("BoardService#insertBoard : board#id = " + board.getId());
+
+            // attachment 테이블에 등록
+            List<Attachment> attachments = board.getAttachments();
+            if (!attachments.isEmpty()) {
+                for (Attachment attach : attachments) {
+                    attach.setBoardId(board.getId()); // fk boardId 필드값 대입
+                    result = boardDao.insertAttachment(session, attach);
+                }
+            }
             session.commit();
         } catch (Exception e) {
             session.rollback();
-            throw e; // 오류 던지기
+            throw e; // catch로 잡고 오류던지기 안하면 코드 잘 돌아가는거같지만 안됨
         } finally {
             session.close();
         }

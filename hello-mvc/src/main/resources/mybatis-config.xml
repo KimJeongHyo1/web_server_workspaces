@@ -51,6 +51,6 @@
     </environments>
     <mappers>
         <mapper resource="mapper/member/member-mapper.xml"/>
-        <mapper resource="mapper/member/board-mapper.xml"/>
+        <mapper resource="mapper/board/board-mapper.xml"/>
     </mappers>
 </configuration>

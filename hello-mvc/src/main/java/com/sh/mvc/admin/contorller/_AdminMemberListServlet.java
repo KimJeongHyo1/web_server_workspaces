@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +31,8 @@ import java.util.Map;
  *    - url : 요청 url
  *
  */
-@WebServlet("/admin/memberList")
-public class AdminMemberListServlet extends HttpServlet {
+//@WebServlet("/admin/memberList")
+public class _AdminMemberListServlet extends HttpServlet {
     private MemberService memberService = new MemberService();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -46,15 +45,7 @@ public class AdminMemberListServlet extends HttpServlet {
             page = Integer.parseInt(req.getParameter("page"));
             /* null이 넘어오면 오류뜨니까 */
         } catch (NumberFormatException ignore) {    }
-
-        String searchType = req.getParameter("search-type");
-        String searchKeyword = req.getParameter("search-keyword");
-
-        Map<String, Object> param = new HashMap<>(); /* 맵으로 묶어줘도 됌 */
-        param.put("searchType", searchType);
-        param.put("searchKeyword", searchKeyword);
-        param.put("page", page);
-        param.put("limit", limit);
+        Map<String, Object> param = Map.of("page", page, "limit", limit);
         System.out.println(param);
 
         // 2. 업무로직
@@ -65,11 +56,8 @@ public class AdminMemberListServlet extends HttpServlet {
 
         // 페이지바 작업
         // b. pagebar영역
-        int totalCount = memberService.getTotalCount(param);
+        int totalCount = memberService.getTotalCount();
         String url = req.getRequestURI();
-        if(searchType != null && searchKeyword != null) {
-            url += "?search-type" + searchType + "&searchKeyword" + searchKeyword;
-        }
         String pagebar = HelloMvcUtils.getPagebar(page, limit, totalCount, url);
         req.setAttribute("pagebar", pagebar);
 

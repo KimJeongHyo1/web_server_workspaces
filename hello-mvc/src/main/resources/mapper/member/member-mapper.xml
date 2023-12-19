@@ -115,11 +115,23 @@
     </select>
 
     <!-- Mybatis타입(byte, long, short, int, double, float, boolean)으로 적을때 _를 적어줘야함  -->
+    <!-- where태그 하위 if구문이 하나라도 실행될때만 where절을 작성한ㄷ.
+         - where다음에 and/of 연산자가 나오면 삭제 처리
+         - 여러개의 if구문 처리에 적합
+     -->
     <select id="getTotalCount" resultType="_int">
         select
             count(*)
         from
             member
+        <where>
+            <!-- 검색목록이 있으면서 검색목록이 비어있지않고 검색어가 비어있지않을때 검색해주라 (=> 검색목록은 필수, 검색어는 비어있지만않으면 가능 -->
+            <if test="searchType != null and searchType != '' and searchKeyword != ''">
+<!--                where -->
+                ${searchType} like '%' || #{searchKeyword} || '%'
+            </if>
+            <!-- if가 fail면 where절없이 실행됨 -->
+        </where>
     </select>
 
     <select id="getTotalCount2" resultType="_int">
@@ -130,7 +142,5 @@
         where
             ${searchType} like '%' || #{searchKeyword} || '%'
     </select>
-
-
 
 </mapper>

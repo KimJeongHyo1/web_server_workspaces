@@ -305,9 +305,41 @@ insert into web.attachment(id, board_id, original_filename, renamed_filename)
 values(seq_attachment_id.nextval, 60, '테스트2.txt', '00016e0f-4538-47b0-b676-c746c50cd64e.txt');
 commit;
 
-
 select * from board order by id desc;
 select * from attachment order by id desc;
+
+
+-- 첨부파일이 있는 게시글 조회
+select
+    b.*,
+    (select count(*) from attachment where board_id = b.id) attach_count
+from
+    board b;
+
+-- 게시글 상세보기
+-- 1. board 조회 + attachment 조회
+select * from board where id = 64;
+select * from attachment where board_id = 65;
+
+-- 2. 조인쿼리
+select
+    b.*
+    a.id attach_id,
+    a.board_id,
+    a.original_ filename,
+    a.renamed_filename,
+    a.reg_date attach_reg_date
+from
+    board b left join attachment a
+        on b.id = a.board_id
+where
+    b.id = 64;
+
+
+
+
+
+
 
 
 

@@ -132,7 +132,7 @@ public class HelloMvcUtils {
         }
 
         // 2. 페이지넘버
-        while (pageNo <= pagebarEnd && pageNo <= totalPage) {
+        while (pageNo <= pagebarEnd && pageNo <= totalPage) { // 1,2,3,4,5지만 3에서 끝날수도있으니 이렇게 작성
             if (pageNo == page) {
                 // 현재 페이지
                 pagebar.append(currentPageNo.formatted(url + pageNo, pageNo)); // 문자열, 숫자열
@@ -152,6 +152,10 @@ public class HelloMvcUtils {
             pagebar.append(next.formatted(url + pageNo));
         }
         return pagebar.toString();
+    }
+
+    public static String convertLineFeedToBr(String str) {
+        return str.replaceAll("\n", "<br>");
     }
 }
 

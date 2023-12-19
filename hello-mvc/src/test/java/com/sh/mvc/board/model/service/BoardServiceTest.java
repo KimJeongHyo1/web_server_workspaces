@@ -1,6 +1,7 @@
 package com.sh.mvc.board.model.service;
 
 import com.sh.mvc.board.model.entity.Board;
+import com.sh.mvc.board.model.vo.BoardVo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -58,10 +59,14 @@ public class BoardServiceTest {
     @DisplayName("게시글 등록")
     @Test
     public void test4() {
-        String title = "추가";
-        String memberId = "abcde";
-        String content = "안녕하세요!";
-        Board board = new Board(0, title, memberId, content, 0, null);
+//        String title = "추가";
+//        String memberId = "abcde";
+//        String content = "안녕하세요!";
+
+        BoardVo board = new BoardVo();
+        board.setTitle("제목");
+        board.setContent("내용");
+
         int result = boardService.insertBoard(board);
 
         assertThat(result).isEqualTo(1);
@@ -112,7 +117,7 @@ public class BoardServiceTest {
 
         int limit = 10;
         Map<String, Object> param = Map.of("page", page, "limit", limit);
-        List<Board> boards = boardService.findAll(param);
+        List<BoardVo> boards = boardService.findAll(param);
         System.out.println(boards);
 
         assertThat(boards).isNotEmpty();
