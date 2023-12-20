@@ -76,18 +76,20 @@ public class BoardServiceTest {
     @Test
     public void test5() {
         long id = 100;
-        String newtitle = "수정제목";
-        String newcontent = "수정내용";
+        BoardVo board = boardService.findById(id);
+        assertThat(board).isNotNull();
 
-        Board board = boardService.findById(id);
-        board.setTitle(newtitle);
-        board.setContent(newcontent);
+        String newTitle = "수정제목";
+        String newContent = "수정내용";
+
+        board.setTitle(newTitle);
+        board.setContent(newContent);
         int result = boardService.updateBoard(board);
 
         assertThat(result).isGreaterThan(0);
         Board board1 = boardService.findById(id);
-        assertThat(board1.getTitle()).isEqualTo(newtitle);
-        assertThat(board1.getContent()).isEqualTo(newcontent);
+        assertThat(board1.getTitle()).isEqualTo(newTitle);
+        assertThat(board1.getContent()).isEqualTo(newContent);
     }
     @DisplayName("게시글 삭제")
     @Test

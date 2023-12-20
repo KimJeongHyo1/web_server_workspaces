@@ -4,6 +4,7 @@ import com.sh.mvc.board.model.dao.BoardDao;
 import com.sh.mvc.board.model.entity.Attachment;
 import com.sh.mvc.board.model.entity.Board;
 import com.sh.mvc.board.model.vo.BoardVo;
+import com.sh.mvc.member.model.entity.Member;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
@@ -28,13 +29,49 @@ public class BoardService {
         return totalCount;
     }
 
-    public BoardVo findById(long id) {
+    public BoardVo findById(long id, boolean hasRead) {
+        System.out.println("온다");
         SqlSession session = getSqlSession();
-        BoardVo board = boardDao.findById(session, id);
-        session.close();
+        BoardVo board = null;
+        int result = 0;
+
+        try {
+            // 조회수 증가처리
+            if (!hasRead)
+                result = boardDao.updateBoardReadCount(session, id);
+
+            // 조회
+            board = boardDao.findById(session, id);
+            session.commit();
+        } catch (Exception e) {
+            session.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
         return board;
     }
+    /**
+     * 조회수 상관없이 게시글 조회해야 하는 경우
+     */
+    public BoardVo findById ( long id){
+        return findById(id, true);
+    }
+        // 다 따로 구할 수 있지만 테이블이 커질수록 적합하지않음
+//        BoardVo board = boardDao.findById(session, id); // select * from board where id = ?
+//        Member member = memberDao.findById(session, board.getMemberId()); // select * from member where id = ?
+//        List<Attachment> attachments = boardDao.findAttachmentByBoardId(session, id); // select * from attachment where id = ?
+//        board.setMember(member);
+//        board.setAttachments(attachments);
 
+
+    /**
+     *
+     * - 트랜잭션처리
+     *
+     * @param board
+     * @return
+     */
     public int insertBoard(BoardVo board) {
         int result = 0;
         SqlSession session = getSqlSession();
@@ -54,7 +91,7 @@ public class BoardService {
             session.commit();
         } catch (Exception e) {
             session.rollback();
-            throw e; // catch로 잡고 오류던지기 안하면 코드 잘 돌아가는거같지만 안됨
+            throw e; // catch로 잡고 오류던지기 안하면 코드 잘 돌아가는거 같지만 안됨
         } finally {
             session.close();
         }
@@ -75,19 +112,28 @@ public class BoardService {
         return result;
     }
 
-    public int updateBoard(Board board) {
+    public int updateBoard(BoardVo board) {
         int result = 0;
         SqlSession session = getSqlSession();
-
         try {
+            // board테이블 수정
             result = boardDao.updateBoard(session, board);
+
+            // attachment테이블 등록
+            List<Attachment> attachments = board.getAttachments();
+            if (!attachments.isEmpty()) {
+                for (Attachment attach : attachments) {
+                    attach.setBoardId(board.getId());
+                    result = boardDao.insertAttachment(session, attach);
+                }
+            }
             session.commit();
         } catch (Exception e) {
             session.rollback();
         } finally {
             session.close();
         }
-        return result;
+        return boards;
     }
 
     public List<Board> findAll() {

@@ -12,11 +12,11 @@ public class Attachment {
     public Attachment() {
     }
 
-    public Attachment(long id, long boardId, String originalFilename, String renameFilename, LocalDateTime regDate) {
+    public Attachment(long id, long boardId, String originalFilename, String renamedFilename, LocalDateTime regDate) {
         this.id = id;
         this.boardId = boardId;
         this.originalFilename = originalFilename;
-        this.renamedFilename = renameFilename;
+        this.renamedFilename = renamedFilename;
         this.regDate = regDate;
     }
 
@@ -44,11 +44,11 @@ public class Attachment {
         this.originalFilename = originalFilename;
     }
 
-    public String getRenameFilename() {
+    public String getRenamedFilename() {
         return renamedFilename;
     }
 
-    public void setRenameFilename(String renameFilename) {
+    public void setRenamedFilename(String renameFilename) {
         this.renamedFilename = renameFilename;
     }
 
@@ -66,7 +66,7 @@ public class Attachment {
                 "id=" + id +
                 ", boardId=" + boardId +
                 ", originalFilename='" + originalFilename + '\'' +
-                ", renameFilename='" + renamedFilename + '\'' +
+                ", renamedFilename='" + renamedFilename + '\'' +
                 ", regDate=" + regDate +
                 '}';
     }

@@ -323,17 +323,26 @@ select * from attachment where board_id = 65;
 
 -- 2. 조인쿼리
 select
-    b.*
+    b.*,
+--    m.*,
+    m.name member_name,
     a.id attach_id,
     a.board_id,
-    a.original_ filename,
+    a.original_filename,
     a.renamed_filename,
     a.reg_date attach_reg_date
 from
-    board b left join attachment a
+    board b 
+    left join member m
+        on b.member_id = m.id
+    left join attachment a
         on b.id = a.board_id
 where
     b.id = 64;
+    
+select * from board;    
+
+
 
 
 
@@ -396,17 +405,91 @@ create table tb_manager (
 
 select * from tb_manager;
 
+select
+    *
+from
+    tb_user
+where
+    user_id like 'gd_hong';
 
 
+-- 상품개체
+create table tb_product (
+    product_number number primary key,
+    product_name varchar2(60),
+    product_price number not null,
+    product_regist_date char(10),
+    product_total_sell_count number not null
+);
+-- 판매자 개체
+create table tb_seller (
+    seller_id number primary key,
+    seller_name varchar2(60),
+    seller_homepage_url varchar2(60)
+);
+    
+select * from tb_seller;
+select * from tb_product;
+
+상품 컨트롤러 이름 : ProductController
+상품 컨트롤러 주소 : /grade/product
+컨트롤러의 기능별 주소 :
+	- 등록 : /grade/product/regist
+	- 목록 : /grade/product/list
+	- 수정 : /grade/product/update
+	- 삭제 : /grade/product/delete
 
 
+판매자 컨트롤러 이름 : SellerController
+판매자 컨트롤러 주소 : /grde/seller
+컨트롤러의 기능별 주소 : 
+    - 등록 : /grade/seller/regist
+	- 목록 : /grade/seller/list
+	- 수정 : /grade/seller/update
+	- 삭제 : /grade/seller/delete
+
+Service
+상품 서비스 인터페이스 이름 : ProducttService
+상품 서비스 구현체 이름 : ProductServiceImpl
+판매자 서비스 인터페이스 이름 : SellerService
+판매자 서비스 구현체 이름 : SellerServiceImpl
+
+Repository
+상품 리파지토리 인터페이스 이름 : ProductRepository
+상품 리파지토리 구현체 이름 : ProductRepositoryImpl
+판매자 리파지토리 인터페이스 이름 : SellerRepository
+판매자 리파지토리 구현체 이름 : SellerRepositoryImpl
 
 
+상품VO
+@Data
+public class StudentVO {
+	private String ProductName;
+	private int ProductPrice;
+	private String ProductRegistDate;
+	private int ProductTotalSellCount;
+}
 
+판매자VO
+@Data
+public class ManagerVO {
+	private int SellerId;
+	private String SellerName;
+	private String SellerHomepageUrl;
+}
 
+CREATE TABLE_NOTICE(
+NOTICE_NO NUMBER PRIMARY KEY,
+NOTICE_TITLE VARCHAR2(100) NOT NULL,
+NOTICE_WRITER VARCHAR2(15) NOT NULL,
+NOTICE_CONTENT VARCHAR2(4000) NOT NULL,
+NOTICE_DATE DATE DEFAULT SYSDATE,
+FILEPATH VARCHAR2(300),
+STATUS VARCHAR2(1) DEFAULT 'Y',
+FOREIGN KEY (NOTICE_WRITER) REFERENCES MEMBER (USER_ID)
+);
 
-
-
+CREATE SEQUENCE SEQ_NOTICE_NO;
 
 
 

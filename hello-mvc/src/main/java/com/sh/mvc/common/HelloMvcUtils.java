@@ -157,5 +157,9 @@ public class HelloMvcUtils {
     public static String convertLineFeedToBr(String str) {
         return str.replaceAll("\n", "<br>");
     }
+
+    public static String escapeHtml(String str) {
+        return str.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+    }
 }
 

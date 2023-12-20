@@ -75,12 +75,13 @@ public class BoardCreateServlet  extends HttpServlet {
                     // 파일 : 서버컴퓨터에 저장과 동시에 파일정보를 Attachment객체로 만들어서 db에도 저장
                     if (item.getSize() > 0) {
                         System.out.println(name);
-                        String originalFilname = item.getName();
-                        System.out.println("파일 : " + originalFilname);
+                        String originalFilename = item.getName();
+                        System.out.println("파일 : " + originalFilename);
                         System.out.println("크기 : " + item.getSize() + "byte");
 
-                        int dotIndex = originalFilname.lastIndexOf(".");
-                        String ext = dotIndex > -1 ? originalFilname.substring(dotIndex) : "";
+                        int dotIndex = originalFilename.lastIndexOf(".");
+                        String ext = dotIndex > -1 ? originalFilename.substring(dotIndex) : "";
+                        // 확장자 ext(extension)
 
                         UUID uuid = UUID.randomUUID(); // 고유한 문자열 토큰 발급
                         String renamedFilename = uuid + ext; // 저장된 파일명 (파일덮어쓰기, 인코딩이슈 방지)
@@ -92,8 +93,8 @@ public class BoardCreateServlet  extends HttpServlet {
 
                         // Attachment 객체생성
                         Attachment attach = new Attachment();
-                        attach.setOriginalFilename(originalFilname);
-                        attach.setRenameFilename(renamedFilename);
+                        attach.setOriginalFilename(originalFilename);
+                        attach.setRenamedFilename(renamedFilename);
                         board.addAttachment(attach);
                     }
                 }
@@ -124,4 +125,4 @@ public class BoardCreateServlet  extends HttpServlet {
 //        Board board = new Board();
 //        board.setTitle(title);
 //        board.setMemberId(memberId);
-//        board.setContent(content);         -> multi로 사용하면 쓸 수 없음
+//        board.setContent(content); -> multi로 사용하면 쓸 수 없음

@@ -39,12 +39,16 @@ public class BoardDao {
         return session.update("board.updateBoard", board);
     }
 
-        public List<Board> findAll(SqlSession session) {
+    public List<Board> findAll(SqlSession session) {
         return session.selectList("board.findAll");
     }
 
     public int insertAttachment(SqlSession session, Attachment attach) {
         return session.insert("board.insertAttachment", attach);
+    }
+
+    public int updateBoardReadCount(SqlSession session, long id) {
+        return session.update("board.updateBoardReadCount", id);
     }
 //    public List<Board> findAll(SqlSession session, Map<String, Object> param) {
 //        int page = (int) param.get("page");
