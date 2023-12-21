@@ -1,11 +1,9 @@
 package com.sh.mvc.board.controller;
 
 import com.sh.mvc.board.model.entity.Attachment;
-import com.sh.mvc.board.model.entity.Board;
 import com.sh.mvc.board.model.service.BoardService;
 import com.sh.mvc.board.model.vo.BoardVo;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -17,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @WebServlet("/board/boardUpdate")
@@ -57,21 +56,26 @@ public class BoardUpdateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // db수정
         // DiskFileItemFactory - ServletFileUpload
-        File repository = new File("C:\\Workspaces\\web_server_workspace\\hello-mvc\\src\\main\\webapp\\WEB-INF\\views\\board");
+        // File repository = 업로드될 절대주소. 상대주소는 안됨
+        File repository = new File("C:\\Workspaces\\web_server_workspace\\hello-mvc\\src\\main\\webapp\\upload\\board");
         DiskFileItemFactory factory = new DiskFileItemFactory();
         factory.setRepository(repository);
-        factory.setSizeThreshold(10 * 1024 * 1024);
+        factory.setSizeThreshold(10 * 1024 * 1024); // 10mb
         ServletFileUpload servletFileUpload = new ServletFileUpload(factory);
         BoardVo board = new BoardVo();
         try {
             // 1. 사용자 입력값 처리 -> form사용하면  req.getSession 쓸 수 없음
-            List<FileItem> fileItemList = servletFileUpload.parseRequest(req);
+//            List<FileItem> fileItemList = servletFileUpload.parseRequest(req);
+            Map<String, List<FileItem>> fileItemMap = servletFileUpload.parseParameterMap(req);
+            System.out.println(fileItemMap.get("id"));
             if (true) return;
+            // 1. 사용자 입력값 처리 -> form사용하면  req.getSession 쓸 수 없음
+            List<FileItem> fileItemList = servletFileUpload.parseRequest(req);
             for (FileItem fileItem : fileItemList) {
                 String name = fileItem.getFieldName();
                 if (fileItem.isFormField()) {
-                    // form field
-                    String value = fileItem.getString("urf-8");
+                    // form field -> 삭제됐는지도 확인가능
+                    String value = fileItem.getString("utf-8");
                     board.setValue(name, value);
                 } else {
                     // file
@@ -93,6 +97,7 @@ public class BoardUpdateServlet extends HttpServlet {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        System.out.println(board);
 
         // 2. 업무로직
         int result = boardService.updateBoard(board);

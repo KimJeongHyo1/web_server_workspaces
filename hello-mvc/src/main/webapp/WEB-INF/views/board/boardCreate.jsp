@@ -27,6 +27,7 @@
             </div>
             <div class="sm:col-span-2">
                 <label class="block mb-2 text-sm font-medium text-gray-900" for="upFile">첨부파일</label>
+                                                        <%-- multiple없으면 하나만 선택가능 써주면 드래그로 여러개 선택가능 --%>
                 <input type="file" id="upFile" name="upFile" multiple class="block p-2.5 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
             </div>
             <div class="sm:col-span-2">
@@ -34,7 +35,7 @@
                 <textarea name="content" id="content" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500" placeholder="내용을 작성하세요." required></textarea>
             </div>
         </div>
-        <button type="submit" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200class="sm:col-span-2">
+        <button type="submit" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200" class="sm:col-span-2">
         저장
         </button>
     </form>

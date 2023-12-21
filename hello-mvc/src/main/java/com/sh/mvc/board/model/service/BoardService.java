@@ -3,6 +3,7 @@ package com.sh.mvc.board.model.service;
 import com.sh.mvc.board.model.dao.BoardDao;
 import com.sh.mvc.board.model.entity.Attachment;
 import com.sh.mvc.board.model.entity.Board;
+import com.sh.mvc.board.model.entity.BoardComment;
 import com.sh.mvc.board.model.vo.BoardVo;
 import com.sh.mvc.member.model.entity.Member;
 import org.apache.ibatis.session.SqlSession;
@@ -42,6 +43,9 @@ public class BoardService {
 
             // 조회
             board = boardDao.findById(session, id);
+            List<BoardComment> comments = boardDao.findCommentByBoardId(session, id);
+            board.setComments(comments);
+
             session.commit();
         } catch (Exception e) {
             session.rollback();
@@ -54,7 +58,7 @@ public class BoardService {
     /**
      * 조회수 상관없이 게시글 조회해야 하는 경우
      */
-    public BoardVo findById ( long id){
+    public BoardVo findById (long id){
         return findById(id, true);
     }
         // 다 따로 구할 수 있지만 테이블이 커질수록 적합하지않음
@@ -66,8 +70,9 @@ public class BoardService {
 
 
     /**
-     *
-     * - 트랜잭션처리
+     * 트랜잭션처리
+     * - Board등록
+     * - Attachment등록
      *
      * @param board
      * @return
@@ -106,6 +111,7 @@ public class BoardService {
             session.commit();
         } catch (Exception e) {
             session.rollback();
+            throw e;
         } finally {
             session.close();
         }
@@ -119,21 +125,30 @@ public class BoardService {
             // board테이블 수정
             result = boardDao.updateBoard(session, board);
 
-            // attachment테이블 등록
+            // attachment 테이블 삭제
+            List<Long> delFiles = board.getDelFiles();
+            if (!delFiles.isEmpty()) {
+                for (Long id : delFiles) {
+                    result = boardDao.deleteAttachment(session, id);
+                }
+            }
+
+            // attachment 테이블 등록
             List<Attachment> attachments = board.getAttachments();
             if (!attachments.isEmpty()) {
                 for (Attachment attach : attachments) {
-                    attach.setBoardId(board.getId());
+                    attach.setBoardId(board.getId()); // fk 등록
                     result = boardDao.insertAttachment(session, attach);
                 }
             }
             session.commit();
         } catch (Exception e) {
             session.rollback();
+            throw e;
         } finally {
             session.close();
         }
-        return boards;
+        return result;
     }
 
     public List<Board> findAll() {
@@ -141,5 +156,20 @@ public class BoardService {
         List<Board> boards = boardDao.findAll(session);
         session.close();
         return boards;
+    }
+
+    public int insertBoardComment(BoardComment comment) {
+        int result = 0;
+        SqlSession session = getSqlSession();
+        try {
+            result = boardDao.insertBoardComment(session, comment);
+            session.commit();
+        } catch (Exception e) {
+            session.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+        return result;
     }
 }

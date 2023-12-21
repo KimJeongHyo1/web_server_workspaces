@@ -340,7 +340,124 @@ from
 where
     b.id = 64;
     
-select * from board;    
+select * from board;
+
+-- 댓글 기능구현
+create table board_comment (
+    id number,
+    board_id number,
+    member_id varchar2(20),
+    content varchar2(2000),
+    comment_level number default 1, -- 댓글인 경우는 1, 대댓글인 경우는 2
+    parent_comment_id number, -- 댓글인 경우는 null, 대댓글인 경우는 부모댓글의 id
+    reg_date date default sysdate,
+    constraints pk_board_comment_id primary key(id),
+    constraints fk_board_comment_board_id foreign key(board_id) references board(id) on delete cascade,
+    constraints fk_board_comment_member_id foreign key(member_id) references member(id) on delete set null, -- on delete는 정하기 나름
+    constraints fk_board_parent_comment_id foreign key(parent_comment_id) references board_comment(id) on delete cascade
+);
+--drop table board_comment;
+--drop sequence seq_board_comment_id;
+
+create sequence seq_board_comment_id;
+
+select * from board_comment;
+
+-- 67번 게시판 댓글 데이터
+insert into board_comment
+values(seq_board_comment_id.nextval, 67, 'abcde', '구라;', default, null, default);
+insert into board_comment
+values(seq_board_comment_id.nextval, 67, 'opqr', 'ㄹㅇ;', default, null, default);
+insert into board_comment
+values(seq_board_comment_id.nextval, 67, 'admin', '신고되셨습니다.', default, null, default);
+
+-- 대댓글
+insert into board_comment
+values(seq_board_comment_id.nextval, 67, 'qwerty', '진짜였음ㅡㅡ', 2, 1, default);
+insert into board_comment
+values(seq_board_comment_id.nextval, 67, 'qwerty', '알지도 못하면서;', 2, 2, default);
+insert into board_comment
+values(seq_board_comment_id.nextval, 67, 'qwerty', '네...', 2, 3, default);
+insert into board_comment
+values(seq_board_comment_id.nextval, 67, 'opqr', 'oo;', 2, 2, default);
+
+commit;
+-- 계층형쿼리
+-- 행과 행을 부모/자식관계로 연결해서 tree구조의 순서로 결과집합을 반환
+-- 계층구조의 데이터 표현에 적합. 댓글, 조직도, 메뉴 등 . . .
+
+-- start with 루트 부모행을 지정하는 조건절
+-- connect by 부모/자식을 연결하는 조건절, prior를 부모행의 컬럼 앞에 작성
+-- level이라는 가상컬럼(계층레벨)을 제공
+
+select
+    *
+from
+    board_comment
+where
+    board_id = 67
+start with
+    comment_level = 1
+connect by
+    prior id = parent_comment_id
+    order siblings by -- 계층(댓글대댓글)순으로 정렬
+    id;
+
+
+select
+    lpad(' ', (level - 1) * 5) || content,
+    member_id,
+    level
+from
+    board_comment
+where
+    board_id = 67
+start with
+    comment_level = 1
+connect by
+    parent_comment_id = prior id;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

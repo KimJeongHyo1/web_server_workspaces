@@ -2,6 +2,7 @@ package com.sh.mvc.board.model.vo;
 
 import com.sh.mvc.board.model.entity.Attachment;
 import com.sh.mvc.board.model.entity.Board;
+import com.sh.mvc.board.model.entity.BoardComment;
 import com.sh.mvc.member.model.entity.Member;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,9 @@ public class BoardVo extends Board {
     private Member member; // Member(javaType) member(property)
     private int attachCount; // 첨부파일 갯수
     private List<Attachment> attachments = new ArrayList<>(); // 껍데기뿐인 List를 만들어 놓고 추가되게 하기
+    private List<Long> delFiles = new ArrayList<>();
+    private List<BoardComment> comments;
+
     public BoardVo() {
     }
 
@@ -46,6 +50,7 @@ public class BoardVo extends Board {
     public void addAttachment(Attachment attachment) {
         this.attachments.add(attachment);
     }
+    /* 편의메소드로 쓰려고 만듦 : .add(attachment) */
 
     public List<Attachment> getAttachments() {
         return attachments;
@@ -55,12 +60,41 @@ public class BoardVo extends Board {
         this.attachments = attachments;
     }
 
+    public List<Long> getDelFiles() {
+        return delFiles;
+    }
+
+    public void setDelFiles(List<Long> delFiles) {
+        this.delFiles = delFiles;
+    }
+
+    public List<BoardComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<BoardComment> comments) {
+        this.comments = comments;
+    }
+
+    public void setValue(String name, String value) {
+        switch (name) {
+            case "id" : setId(Long.parseLong(value)); break;
+            case "title" : setTitle(value); break;
+            case "memberId" : setMemberId(value); break;
+            case "content" : setContent(value); break;
+            case "delFile" : this.delFiles.add(Long.parseLong(value)); break; /* 삭제할 파일번호 */
+            default: throw new RuntimeException("부적절한 name값 : " + name);
+        }
+    }
+
     @Override
     public String toString() {
         return "BoardVo{" +
                 "member=" + member +
                 ", attachCount=" + attachCount +
                 ", attachments=" + attachments +
+                ", delFiles=" + delFiles +
+                ", comments=" + comments +
                 "} " + super.toString();
     }
 }

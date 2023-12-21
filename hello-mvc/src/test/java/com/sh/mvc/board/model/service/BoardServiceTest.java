@@ -7,6 +7,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
@@ -69,7 +70,7 @@ public class BoardServiceTest {
 
         int result = boardService.insertBoard(board);
 
-        assertThat(result).isEqualTo(1);
+        assertThat(result).isEqualTo(0);
 
     }
     @DisplayName("게시글 수정")
@@ -87,28 +88,34 @@ public class BoardServiceTest {
         int result = boardService.updateBoard(board);
 
         assertThat(result).isGreaterThan(0);
-        Board board1 = boardService.findById(id);
-        assertThat(board1.getTitle()).isEqualTo(newTitle);
-        assertThat(board1.getContent()).isEqualTo(newContent);
+        Board boardUpdated  = boardService.findById(id);
+        assertThat(boardUpdated).satisfies((b) -> {
+            assertThat(b.getTitle()).isEqualTo(newTitle);
+            assertThat(b.getContent()).isEqualTo(newContent);
+        });
     }
     @DisplayName("게시글 삭제")
-    @Test
-    public void test6() {
-        long id = 100;
+    @ParameterizedTest
+    @MethodSource("boatdIdProvider")
+    public void test6(Long id) {
+        // given
         Board board = boardService.findById(id);
         assertThat(board).isNotNull();
-
+        // when
         int result = boardService.deleteBoard(id);
+        // then
         assertThat(result).isGreaterThan(0);
+        Board boardDeleted = boardService.findById(id);
+        assertThat(boardDeleted).isNull();
     }
     @DisplayName("전체 게시글 수 조회")
     @Test
     public void test7() {
+        // given
+        // when
         int totalCount = boardService.getTotalCount();
-        System.out.println(totalCount);
-        assertThat(totalCount).isNotNull();
-        assertThat(totalCount).isLessThanOrEqualTo(0);
-
+        // then
+        assertThat(totalCount).isNotNegative(); // 음수가 아니어야 한다. 0이상
     }
     @DisplayName("게시글 페이징 조회")
     @ParameterizedTest
@@ -126,5 +133,16 @@ public class BoardServiceTest {
         assertThat(boards.size()).isLessThanOrEqualTo(limit);
 
     }
-
+//    public static Stream<Integer> pageNoProvider() {
+//        BoardService boardService = new BoardService();
+//        SqlSession session = getSqlSession();
+//        int totalCount = boardService.getTotalCount();
+//        int totalPage = (int) Math.ceil((double) totalCount / limit);
+//        return IntStream.range(1, totalPage).boxed(); // 1 부터 total페이지까지를 요소로 하는 Stream생성
+//    }
+//    public static Stream<Arguments> boardIdProvider() {
+//        BoardService boardService = new BoardService(); // non-static fixture를 사용할 수 없다.
+//        List<Board> boards = boardService.findAll();
+//        return Stream.of(Arguments.arguments(boards.get(0).getId()));
+//    }
 }

@@ -49,6 +49,13 @@ public class MemberLoginServlet extends HttpServlet {
     // GET/member/Login
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Refere(사용자가 머물렀던 페이지)를 세션에 저장
+        String referer = req.getHeader("Referer");
+        System.out.println("referer = " + referer);
+
+        if (!referer.contains("/member/memberlogin"))
+            req.getSession().setAttribute("next", referer);
+
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/views/member/memberLogin.jsp");
         requestDispatcher.forward(req, resp);
     }
@@ -89,7 +96,14 @@ public class MemberLoginServlet extends HttpServlet {
             // req객체는 이번 요청 실행 후 폐기
 //            HttpSession session = req.getSession(); // 성공, 실패 다 쓰려고 올림
             session.setAttribute("loginMember", member);
-            resp.sendRedirect(req.getContextPath() + "/"); // 성공시 index페이지로 이동
+            String location = req.getContextPath() + "/";
+            String next = (String) req.getSession().getAttribute("next");
+            if (next != null) {
+                location = next;
+                req.getSession().removeAttribute("next");
+            }
+            resp.sendRedirect(location);
+//            resp.sendRedirect(req.getContextPath() + "/"); // 성공시 index페이지로 이동
 
         } else {
             // 로그인 실패
