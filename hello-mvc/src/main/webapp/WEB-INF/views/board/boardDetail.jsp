@@ -39,8 +39,8 @@
             </span>
         </div>
         <%-- 작성자 본인과 관리자에게만 노출 --%>
+        <c:if test="${loginMember.id eq board.memberId || loginMember.role eq Role.A}">
         <div class="flex justify-end">
-            <c:if test="${loginMember.id eq board.memberId || loginMember.role eq Role.A}">
             <button type="button"
                     onclick="location.href = '${pageContext.request.contextPath}/board/boardUpdate?id=${board.id}';"
                     class="px-5 py-2.5 mt-4 mr-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200">
