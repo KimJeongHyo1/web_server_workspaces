@@ -69,7 +69,8 @@
         -->
         select
             b.*,
-            (select count(*) from attachment where board_id = b.id) attach_count
+            (select count(*) from attachment where board_id = b.id) attach_count,
+            (select count(*) from board_comment where board_id = b.id) comment_count
         from
             board b
         order by

@@ -389,6 +389,7 @@ commit;
 -- start with 루트 부모행을 지정하는 조건절
 -- connect by 부모/자식을 연결하는 조건절, prior를 부모행의 컬럼 앞에 작성
 -- level이라는 가상컬럼(계층레벨)을 제공
+-- order siblings by 컬럼 계층형쿼리 전용 정렬
 
 select
     *

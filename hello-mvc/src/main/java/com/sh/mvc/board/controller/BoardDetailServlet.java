@@ -1,5 +1,6 @@
 package com.sh.mvc.board.controller;
 
+import com.sh.mvc.board.model.exception.BoardException;
 import com.sh.mvc.board.model.service.BoardService;
 import com.sh.mvc.board.model.vo.BoardVo;
 import com.sh.mvc.common.HelloMvcUtils;
@@ -28,43 +29,51 @@ public class BoardDetailServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 1. 사용자 입력값
-        long id = Long.parseLong(req.getParameter("id"));
-        System.out.println(id);
+        try {
+            // 1. 사용자 입력값
+            long id = Long.parseLong(req.getParameter("id"));
+            System.out.println(id);
 
-        // 2. 업무로직
-        // 조회수 관련처리
-        Cookie[] cookies = req.getCookies();
-        List<String> boardCookieValues = getBoardCookieValues(cookies);
-//        boolean hasRead = false; // 일단 안읽은걸로 확인
-//        Arrays.asList(value.split("/")); // Arrays.asList = immutable한 요소 반환
-        boolean hasRead = boardCookieValues.contains(String.valueOf(id)); // 현재 게시글 읽음여부
-        System.out.println(hasRead); // true는 이미 읽었음, false는 처음 읽음
+            // 2. 업무로직
+            // 조회수 관련처리
+            Cookie[] cookies = req.getCookies();
+            List<String> boardCookieValues = getBoardCookieValues(cookies);
+    //        boolean hasRead = false; // 일단 안읽은걸로 확인
+    //        Arrays.asList(value.split("/")); // Arrays.asList = immutable한 요소 반환
+            boolean hasRead = boardCookieValues.contains(String.valueOf(id)); // 현재 게시글 읽음여부
+            System.out.println(hasRead); // true는 이미 읽었음, false는 처음 읽음
 
-        // 조회
-        BoardVo board = boardService.findById(id, hasRead);
-        System.out.println(board);
+            // 조회
+            BoardVo board = boardService.findById(id, hasRead);
+            System.out.println(board);
 
-        // xss공격대비 escape Html처리
-        String safeHtml = HelloMvcUtils.escapeHtml(board.getContent());
+            // xss공격대비 escape Html처리
+            String safeHtml = HelloMvcUtils.escapeHtml(board.getContent());
 
-        // 개행문자(\n)을 <br>로 바꾸는법 (db바뀌는거아님, 뿌리기전에 바꾸는것)
-        board.setContent(HelloMvcUtils.convertLineFeedToBr(safeHtml));
-        req.setAttribute("board", board);
+            // 개행문자(\n)을 <br>로 바꾸는법 (db바뀌는거아님, 뿌리기전에 바꾸는것)
+            board.setContent(HelloMvcUtils.convertLineFeedToBr(safeHtml));
+            req.setAttribute("board", board);
 
-        // 응답 쿠키 생성 (글을 처음 읽을때만)
-        if (!hasRead) {
-            boardCookieValues.add(String.valueOf(id)); // 현재 게시글 id를 추가
+            // 응답 쿠키 생성 (글을 처음 읽을때만)
+            // 만료시간 쿠키종류
+            // - session cookie -1 지정한 경우, session이 만료되면 쿠키 자동 삭제
+            // - persistant cookie n초 지정한 경우
+            if (!hasRead) {
+                boardCookieValues.add(String.valueOf(id)); // 현재 게시글 id를 추가
+                String value = String.join("/", boardCookieValues); // [12, 34, 56](몇번글읽었는지) -> "12/34/56"
 
-            String value = String.join("/", boardCookieValues); // [12, 34, 56](몇번글읽었는지) -> "12/34/56"
-            Cookie cookie = new Cookie("board", value);
-            cookie.setMaxAge(365 * 24 * 60 * 60); // 음수인 경우 session종료시 삭제, 0인 경우는 즉시 삭제됨/ 조회기간
-            cookie.setPath(req.getContextPath() + "/board/boardDetail"); // 지정한 경로일때만 클라이언트에서 서버로 쿠키 전송
-            resp.addCookie(cookie); // cookie는 여러번 등록 가능
+                Cookie cookie = new Cookie("board", value);
+                cookie.setMaxAge(365 * 24 * 60 * 60); // 음수인 경우 session종료시 삭제, 0인 경우는 즉시 삭제됨/ 조회기간
+                cookie.setPath(req.getContextPath() + "/board/boardDetail"); // 지정한 경로일때만 클라이언트에서 서버로 쿠키 전송
+                resp.addCookie(cookie); // cookie는 여러번 등록 가능
+            }
 
+            // 3. forward
+            req.getRequestDispatcher("/WEB-INF/views/board/boardDetail.jsp").forward(req, resp);
+        } catch (Exception e) {
+            // 예외 전환해서 던지기 : 사용자친화적 메세지, 원인예외 wrapping
+            throw new BoardException("게시글 상세보기 오류", e);
         }
-        // 3. forward
-        req.getRequestDispatcher("/WEB-INF/views/board/boardDetail.jsp").forward(req, resp);
     }
 
     private List<String> getBoardCookieValues(Cookie[] cookies) {

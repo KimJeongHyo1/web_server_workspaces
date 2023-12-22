@@ -99,8 +99,12 @@
                         <td class="px-6 py-4">
                         <c:if test="${loginMember.id eq comment.memberId || loginMember.role eq Role.A}">
                             <div class="flex">
-                                <a href="#" class="font-medium text-red-600 hover:underline ms-3">Remove</a>
+                                <a href="javascript:confirm('정말 삭제하시겠습니까? 😲') && document.boardCommentDeleteFrm${comment.id}.submit();" class="font-medium text-red-600 hover:underline ms-3">Remove</a>
                             </div>
+                            <form name="boardCommentDeleteFrm${comment.id}" action="${pageContext.request.contextPath}/board/boardCommentDelete" method="post">
+                                <input type="hidden" name="id" value="${comment.id}">
+                                <input type="hidden" name="boardId" value="${board.id}">
+                            </form>
                         </c:if>
                         </td>
                         <td class="px-4 py-4">
@@ -145,5 +149,11 @@
         </table>
     </div>
 </div>
+<script>
+    /* 이렇게 전역에 선언해줘도 되지만 쓰지않음 */
+    <%-- const contextPath = '${pageContext.request.contextPath}'; --%>
+    <%-- const boardId = '${board.id}'; --%>
+    <%-- const loginMemberId = '${loginMember.id}'; --%>
+</script>
 <script src="${pageContext.request.contextPath}/js/board/boardDetail.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
