@@ -10,24 +10,26 @@ import java.io.PrintWriter;
 
 @WebServlet("/js")
 public class JsAjaxServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 0. 인코딩 설정
+        // 0. 인코딩설정
         req.setCharacterEncoding("utf-8");
 
-        // 1. 사용자 입력값 처리
+        // 1. 사용자입력값 처리
         String name = req.getParameter("name");
         int num = Integer.parseInt(req.getParameter("num"));
         System.out.println("name = " + name);
         System.out.println("num = " + num);
 
-        // 2. 업무 로직
+        // 2. 업무로직
 
         // 3. 응답에 데이터 직접 출력
-        resp.setContentType("test/html; charset=utf-8");
+        resp.setContentType("text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
-        out.println("이름은 " + name + " 입니다.");
-        out.println("숫자는 " + num + " 입니다.");
+        out.println("이름은 " + name + "입니다.");
+        out.println("숫자는 " + num + "입니다.");
+
     }
 
     @Override

@@ -1,4 +1,4 @@
-const getXMLHttpRequest = () => new XMLHttpRequest();
+const getXMLHttpRequest = () => new XMLHttpRequest();  /* jQuery도 내부적으로 사용함 */
 
 /**
  * XMLHttpRequest

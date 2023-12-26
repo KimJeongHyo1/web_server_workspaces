@@ -19,6 +19,9 @@
             border: 1px solid #000;
             padding: 5px;
         }
+        table img {
+            width: 200px;
+        }
     </style>
 </head>
 <body>
@@ -32,6 +35,55 @@
         </thead>
         <tbody></tbody>
     </table>
+
+    <button id="btn-product">상품 확인</button>
+    <table id="products">
+        <thead>
+        <th>상품ID</th>
+        <th>SKU</th>
+        <th>상품명</th>
+        <th>URL</th>
+        <th>가격</th>
+        <th>판매가격</th>
+        <th>썸네일URL</th>
+        <th>검색키워드</th>
+        <th>설명</th>
+        <th>카테고리</th>
+        <th>카테고리ID</th>
+        <th>브랜드</th>
+        <th>자식 SKU</th>
+        <th>자식 가격</th>
+        <th>컬러</th>
+        <th>컬러 패밀리</th>
+        <th>컬러 견본</th>
+        <th>사이즈</th>
+        <th>신발 사이즈</th>
+        <th>바지 사이즈</th>
+        <th>주기</th>
+        <th>계절</th>
+        <th>배지</th>
+        <th>별점 평균</th>
+        <th>별점 개수</th>
+        <th>재고수</th>
+        <th>생성일</th>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <button id="btn-celeb">Celeb 확인</button>
+<%--    table#celebs>thead>tr>th*4--%>
+    <table id="celebs">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Profile</th>
+            <th>Name</th>
+            <th>Type</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
 
     <script
         src="https://code.jquery.com/jquery-3.7.1.js"
