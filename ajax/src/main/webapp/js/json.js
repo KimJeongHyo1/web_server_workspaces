@@ -19,15 +19,71 @@ document.querySelector("#btn-celeb").addEventListener("click", (e) => {
                     <td><button>삭제</button></td>
                 </tr>`;
             });
-
         }
     });
+});
+
+const updateCeleb = ({dataset: {
+    id, name, profile, type
+}}) => {
+    // const {id, name, profile, type} = button.dataset;
+    // console.log(id, name, profile, type);
+    const frm = document.celebUpdateFrm;
+    frm.scrollIntoView({behavior : "smooth"});
+    frm.id.value = id;
+    frm.name.value = name;
+    frm.type.value = type;
+    frm.querySelector("img").src = `${contextPath}/images/celeb/${profile}`;
+}
+
+const deleteCeleb = (button) => {
+    if(confirm('정말 삭제하시겠습니까? 😯')) {
+        $.ajax({
+            url: `${contextPath}/json/celeb/delete`,
+            method: "post",
+            data: {
+                id : button.dataset.id
+            },
+            success(response) {
+                console.log(response);
+                const {msg} = response;
+                alert(msg);
+            },
+            complete() {
+                // 다시 조회
+                document.querySelector("#btn-celeb").dispatchEvent(new MouseEvent("click"));
+            }
+        })
+    }
+};
+
+document.celebUpdateFrm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const frm = e.target;
+    const frmData = new FormData(frm); // input태그의 사용자입력값 모두 등록
+
+    $.ajax({
+        url : `${contextPath}/json/celeb/update`,
+        method : "post",
+        data : frmData,
+        contentType : false, // 기본값 application/x-www-form-urlencoded 처리하지 않음.
+        processData : false, // 직렬화처리하지 않고, multipart로 처리
+        success(response) {
+            console.log(response);
+            const {msg} = response;
+            alert(msg);
+        },
+        complete() {
+            frm.reset();
+            frm.querySelector("img").src = null; // img는 input태그가 아니라 reset처리되지 않는다.
+        }
+    })
 });
 
 /**
  * 폼을 동기적으로 제출하는 것을 방지
  */
-// document.celebSearchFrm.addEventListener('submit', (e) => e.preventDefault());
+document.celebSearchFrm.addEventListener('submit', (e) => e.preventDefault());
 
 document.querySelector("#btn-celeb-search").addEventListener('click', () => {
     const id = document.celebSearchFrm.id;
