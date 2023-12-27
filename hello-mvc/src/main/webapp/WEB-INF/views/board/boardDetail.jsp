@@ -55,9 +55,10 @@
     </div>
     <!-- 댓글 폼 -->
     <div class="w-full my-2">
-        <form name="boardCommentCreateFrm"
-              action="${pageContext.request.contextPath}/board/boardCommentCreate"
-              method="post">
+        <form
+                name="boardCommentCreateFrm"
+                action="${pageContext.request.contextPath}/board/boardCommentCreate"
+                method="post">
             <input type="hidden" name="boardId" value="${board.id}">
             <input type="hidden" name="memberId" value="${loginMember.id}">
             <input type="hidden" name="commentLevel" value="1">
@@ -72,13 +73,15 @@
                               placeholder="댓글을 작성하세요" required></textarea>
                 </div>
                 <div class="flex items-center justify-end px-3 py-2 border-t">
-                    <button type="submit" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800">
+                    <button type="submit"
+                            class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800">
                         댓글 등록
                     </button>
                 </div>
             </div>
         </form>
     </div>
+
     <!-- 댓글 테이블 -->
     <div class="relative my-8 shadow-xl sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -91,24 +94,26 @@
                             <sub class="text-gray-500">${comment.memberId}</sub>
                             <sub class="text-gray-400">
                                 <fmt:parseDate value="${comment.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate"/>
-                                <fmt:formatDate value="${regDate}" pattern="yy/MM/dd HH:mm"/></sub>
+                                <fmt:formatDate value="${regDate}" pattern="yy/MM/dd HH:mm"/>
+                            </sub>
                             <p class="mt-2">
-                                ${comment.content}
+                                    ${comment.content}
                             </p>
                         </td>
                         <td class="px-6 py-4">
-                        <c:if test="${loginMember.id eq comment.memberId || loginMember.role eq Role.A}">
-                            <div class="flex">
-                                <a href="javascript:confirm('정말 삭제하시겠습니까? 😲') && document.boardCommentDeleteFrm${comment.id}.submit();" class="font-medium text-red-600 hover:underline ms-3">Remove</a>
-                            </div>
-                            <form name="boardCommentDeleteFrm${comment.id}" action="${pageContext.request.contextPath}/board/boardCommentDelete" method="post">
-                                <input type="hidden" name="id" value="${comment.id}">
-                                <input type="hidden" name="boardId" value="${board.id}">
-                            </form>
-                        </c:if>
+                            <c:if test="${loginMember.id eq comment.memberId || loginMember.role eq Role.A}">
+                                <div class="flex">
+                                    <a href="javascript:confirm('정말 삭제하시겠습니까? 😲') && document.boardCommentDeleteFrm${comment.id}.submit();" class="font-medium text-red-600 hover:underline ms-3">Remove</a>
+                                </div>
+                                <form name="boardCommentDeleteFrm${comment.id}" action="${pageContext.request.contextPath}/board/boardCommentDelete" method="post">
+                                    <input type="hidden" name="id" value="${comment.id}">
+                                    <input type="hidden" name="boardId" value="${board.id}">
+                                </form>
+                            </c:if>
                         </td>
                         <td class="px-4 py-4">
-                            <button type="button"
+                            <button
+                                    type="button"
                                     value="${comment.id}"
                                     data-context-path="${pageContext.request.contextPath}"
                                     data-board-id="${board.id}"
@@ -119,8 +124,8 @@
                         </td>
                     </tr>
                 </c:if>
-
                 <c:if test="${comment.commentLevel eq 2}">
+
                     <%-- 대댓글 tr --%>
                     <tr class="bg-white border-b hover:bg-gray-50">
                         <td class="pl-6 pr-2 w-10">⎣</td>
@@ -131,14 +136,18 @@
                                 <fmt:formatDate value="${regDate}" pattern="yy/MM/dd HH:mm"/>
                             </sub>
                             <p class="mt-2">
-                                ${comment.content}
+                                    ${comment.content}
                             </p>
                         </td>
                         <td class="px-6 py-4">
                             <c:if test="${loginMember.id eq comment.memberId || loginMember.role eq Role.A}">
-                            <div class="flex">
-                                <a href="#" class="font-medium text-red-600 hover:underline ms-3">Remove</a>
-                            </div>
+                                <div class="flex">
+                                    <a href="javascript:confirm('정말 삭제하시겠습니까? 😲') && document.boardCommentDeleteFrm${comment.id}.submit();" class="font-medium text-red-600 hover:underline ms-3">Remove</a>
+                                </div>
+                                <form name="boardCommentDeleteFrm${comment.id}" action="${pageContext.request.contextPath}/board/boardCommentDelete" method="post">
+                                    <input type="hidden" name="id" value="${comment.id}">
+                                    <input type="hidden" name="boardId" value="${board.id}">
+                                </form>
                             </c:if>
                         </td>
                         <td class="px-6 py-4"></td>
@@ -150,10 +159,9 @@
     </div>
 </div>
 <script>
-    /* 이렇게 전역에 선언해줘도 되지만 쓰지않음 */
-    <%-- const contextPath = '${pageContext.request.contextPath}'; --%>
-    <%-- const boardId = '${board.id}'; --%>
-    <%-- const loginMemberId = '${loginMember.id}'; --%>
+    <%--const contextPath = '${pageContext.request.contextPath}';--%>
+    <%--const boardId = '${board.id}';--%>
+    <%--const loginMemberId = '${loginMember.id}';--%>
 </script>
 <script src="${pageContext.request.contextPath}/js/board/boardDetail.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
