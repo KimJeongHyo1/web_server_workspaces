@@ -13,7 +13,7 @@ document.querySelector("#btn1").onclick = () => {
             console.dir(root); // <books></books>
             const value = root.getAttribute("myattr"); // 사용자속성
             console.log(value);
-            // const books = root.chidren;
+            // const books = root.children;
             const books = xmlDoc.querySelectorAll("book");
             books.forEach((book) => {
                 console.log(book);
