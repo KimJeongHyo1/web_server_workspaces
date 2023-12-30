@@ -13,7 +13,7 @@ document.querySelector("#btn1").addEventListener("click", (e) => {
       beforeSend() {
          console.log('beforeSend');
       },
-      success(response) {
+      success(response){
          console.log('success');
          console.log(response);
       },

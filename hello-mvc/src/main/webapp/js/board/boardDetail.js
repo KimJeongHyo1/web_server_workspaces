@@ -3,24 +3,26 @@
  * - 이벤트 버블링을 이용해서 최상위 document객체에 submit핸들러 연결
  * - 폼이 제풀되기전 submit이벤트가 발생하고, 상위로 전파(bubbling)돼서 이 핸들러를 호출
  */
-document.boardCommentCreateFrm.addEventListener('submit', (e) => {
-    // 정적으로 생성된 폼, 동적으로 생성된 폼 모두 적용가능
-    if (e.target.is("[name=boardCommentCreateFrm")) {
+document.addEventListener('submit', (e) => {
+    // 정적으로 생성된 폼, 동적으로 생성된 폼 모두 적용
+    if(e.target.matches("[name=boardCommentCreateFrm]")) {
         const frm = e.target;
         const memberId = frm.memberId;
         const content = frm.content;
 
-        if (!memberId.value) {
-            alert('로그인 후 댓글작성가능');
+        if(!memberId.value) {
+            alert('로그인후 댓글을 작성해주세요. 😎');
             e.preventDefault();
             return;
         }
-        if (!/^(.|\n)+$/.test(content.value.trim())) {
-            alert('댓글을 적어주세요');
+
+        if(!/^(.|\n)+$/.test(content.value.trim())) {
+            alert('댓글 내용을 작성해주세요. 😎');
             e.preventDefault();
             return;
         }
     }
+
 });
 
 /**

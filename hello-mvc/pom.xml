@@ -16,6 +16,14 @@
 
   <dependencies>
 
+    <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.10.1</version>
+    </dependency>
+    <!-- json데이터 핸들링-->
+
     <dependency>
       <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
       <groupId>javax.servlet</groupId>
@@ -28,7 +36,29 @@
       <version>9.0.83</version>
     </dependency>
     <!-- 위에 두개는 의존 -->
+    <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-websocket -->
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-websocket</artifactId>
+      <version>9.0.83</version>
+    </dependency>
+    <!-- 위는 websocket 관련 -->
 
+    <dependency>
+      <groupId>com.oracle.database.security</groupId>
+      <artifactId>oraclepki</artifactId>
+      <version>19.21.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.oracle.database.security</groupId>
+      <artifactId>osdt_cert</artifactId>
+      <version>19.21.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.oracle.database.security</groupId>
+      <artifactId>osdt_core</artifactId>
+      <version>19.21.0.0</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
     <dependency>
       <groupId>commons-io</groupId>

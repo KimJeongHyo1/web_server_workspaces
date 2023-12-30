@@ -155,7 +155,7 @@
         </tr>
         <tr>
           <td colspan="3">
-            <button>등록</button>
+            <button>저장</button>
           </td>
         </tr>
         </tbody>
